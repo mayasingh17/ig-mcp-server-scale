@@ -12,6 +12,7 @@ This session targets both new and experienced Kubernetes users looking for alter
 
 ## Resources
 
+- [IG MCP Server](https://github.com/inspektor-gadget/ig-mcp-server) – Inspektor Gadget MCP Server repository
 - [Inspektor Gadget](https://www.inspektor-gadget.io/) – official project website
 - [Inspektor Gadget on GitHub](https://github.com/inspektor-gadget/inspektor-gadget)
 - [CNCF Sandbox Projects](https://www.cncf.io/sandbox-projects/)
