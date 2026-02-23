@@ -51,9 +51,24 @@ REPO_ROOT = Path(__file__).parent.parent
 SPEC_PATH = REPO_ROOT / "docs" / "presentation_spec.md"
 OUT_PPTX  = REPO_ROOT / "Ask_and_You_Shall_Debug_SCaLE.pptx"
 PREVIEWS_DIR = REPO_ROOT / "docs" / "previews"
+LOGO_PATH = REPO_ROOT / "docs" / "media" / "inspektor-gadget-logo.png"
 
 # PIL preview dimensions (1280 × 720 = 16:9)
 PX_W, PX_H = 1280, 720
+
+# Logo placement constants (PPTX)
+LOGO_W_IN    = Inches(1.6)
+LOGO_H_IN    = Inches(0.48)
+LOGO_LEFT_IN = Inches(0.2)
+LOGO_BOTTOM_MARGIN_IN = Inches(0.15)
+
+# Logo placement constants (PIL preview, in pixels at 1280×720)
+# Preview is 1280 px wide × 720 px tall (same 16:9 aspect as slide: 13.33 in × 7.5 in).
+# Scale: 1280 / 13.33 ≈ 96 px/in → 1.6 in ≈ 154 px wide, 0.48 in ≈ 46 px tall, 0.2 in ≈ 19 px from left.
+LOGO_PX_W = 154
+LOGO_PX_H = 46
+LOGO_PX_X = 19   # ~0.2 in
+LOGO_PX_BOTTOM_MARGIN = 14
 
 # ---------------------------------------------------------------------------
 # Color helpers (hex string → tuples used by PIL)
@@ -350,6 +365,20 @@ def _add_accent_bar(slide):
     _add_rect(slide, Inches(0.5), Inches(1.55), SLIDE_W - Inches(1.0), Inches(0.04), ACCENT)
 
 
+def _add_logo(slide):
+    """Place the Inspektor Gadget logo in the bottom-left corner of a slide."""
+    if not LOGO_PATH.exists():
+        return
+    logo_top = SLIDE_H - LOGO_H_IN - LOGO_BOTTOM_MARGIN_IN
+    slide.shapes.add_picture(
+        str(LOGO_PATH),
+        left=LOGO_LEFT_IN,
+        top=logo_top,
+        width=LOGO_W_IN,
+        height=LOGO_H_IN,
+    )
+
+
 # ---------------------------------------------------------------------------
 # PPTX slide builders
 # ---------------------------------------------------------------------------
@@ -406,6 +435,9 @@ def _build_title_slide(prs):
         color=_rgb(156, 163, 175),
         align=PP_ALIGN.RIGHT,
     )
+
+    # Logo bottom-left
+    _add_logo(slide)
     return slide
 
 
@@ -510,6 +542,9 @@ def _build_content_slide(prs, slide_data):
 
     # Footer
     _add_footer(slide)
+
+    # Logo bottom-left
+    _add_logo(slide)
     return slide
 
 
@@ -651,6 +686,7 @@ def _render_title_slide(slide_data) -> Image.Image:
     # Org label bottom right
     draw.text((PX_W - 240, PX_H - 50), "Inspektor Gadget", font=small_font, fill=C_MID_GRAY)
 
+    _paste_logo(img)
     return img
 
 
@@ -744,6 +780,7 @@ def _render_content_slide(slide_data) -> Image.Image:
     draw.text((PX_W // 2, PX_H - 26), FOOTER_TEXT, font=footer_font,
               fill=C_MID_GRAY, anchor="mm")
 
+    _paste_logo(img)
     return img
 
 
@@ -751,6 +788,20 @@ def render_preview(slide_data) -> Image.Image:
     if slide_data["layout"] == "title":
         return _render_title_slide(slide_data)
     return _render_content_slide(slide_data)
+
+
+def _paste_logo(img: Image.Image) -> None:
+    """Paste the IG logo into the bottom-left corner of a PIL image."""
+    if not LOGO_PATH.exists():
+        return
+    try:
+        logo = Image.open(str(LOGO_PATH)).convert("RGBA")
+        logo = logo.resize((LOGO_PX_W, LOGO_PX_H), Image.Resampling.LANCZOS)
+        logo_y = img.height - LOGO_PX_H - LOGO_PX_BOTTOM_MARGIN
+        # Paste with alpha mask for transparency support
+        img.paste(logo, (LOGO_PX_X, logo_y), logo)
+    except Exception as e:
+        print(f"[preview] Warning: could not paste logo: {e}")
 
 
 # ---------------------------------------------------------------------------
