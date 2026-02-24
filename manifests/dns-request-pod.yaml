@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: dns-request-pod
+  namespace: default
+spec:
+  containers:
+  - name: dns-request-container
+    image: wbitt/network-multitool
+    command: ["/bin/sh", "-c"]
+    args:
+    - |
+      while true; do
+        echo "Requesting example.com using default nameserver...";
+        nslookup example.com.;
+        sleep 3;
+        echo "Requesting microsoft.com. using 1.2.3.4 nameserver...";
+        nslookup microsoft.com. 1.2.3.4;
+        sleep 3;
+      done
+
