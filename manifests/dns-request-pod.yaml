@@ -14,8 +14,8 @@ spec:
         echo "Requesting example.com using default nameserver...";
         nslookup example.com.;
         sleep 3;
-        echo "Requesting microsoft.com. using 1.2.3.4 nameserver...";
-        nslookup microsoft.com. 1.2.3.4;
+        echo "Requesting socallinuxexpo.org. using 1.2.3.4 nameserver...";
+        nslookup socallinuxexpo.org. 1.2.3.4;
         sleep 3;
       done
 
