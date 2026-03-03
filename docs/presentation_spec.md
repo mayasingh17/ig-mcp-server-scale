@@ -143,7 +143,7 @@ title: "What is Inspektor Gadget?"
 bullets:
   - "A systems inspection + data collection framework powered by eBPF"
   - "Provides observability in Kubernetes and Linux contexts"
-  - "Ships a wide selection of "gadgets" for debugging and monitoring"
+  - 'Ships a wide selection of "gadgets" for debugging and monitoring'
   - "Designed to make low-level visibility easy within familiar workflows"
 images:
   - path: "docs/media/inspektor-gadget-logo.png"
@@ -153,7 +153,7 @@ images:
 
 # Slide 8
 id: what-is-a-gadget
-title: "What is a "gadget"?"
+title: 'What is a "gadget"?'
 bullets:
   - "A purpose-built eBPF powered observability tool (trace / snapshot / top / profile)"
   - "Examples we'll use today:"
@@ -192,7 +192,7 @@ bullets:
   - "Inspektor Gadget has a large library of powerful gadgets"
   - "In an incident, we found picking the *right* gadget quickly is the hard part"
   - "Teams end up memorizing commands, or reaching for familiar tools first"
-  - "We wanted: "describe the symptom → get the right tool + next step""
+  - 'We wanted: "describe the symptom → get the right tool + next step"'
 callouts:
   - "This is where we discovered MCP."
 images:
@@ -210,7 +210,7 @@ bullets:
   - "Lets the model choose actions (run tools) and then explain results"
   - "In our case: the tools are Inspektor Gadget gadgets via ig-mcp-server"
 callouts:
-  - "MCP turns "chat" into "chat + actions" (tool calls)."
+  - 'MCP turns "chat" into "chat + actions" (tool calls).'
 images:
   - path: "docs\media\ig-logo-compact.svg"
     placement: "top-right"

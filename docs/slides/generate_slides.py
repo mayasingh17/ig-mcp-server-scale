@@ -1,15 +1,18 @@
 """
-generate_slides.py
-==================
-Reads docs/presentation_spec.md and produces:
-  1. Ask_and_You_Shall_Debug_SCaLE.pptx  – the full slide deck
-  2. docs/previews/preview_<id>.png       – PNG preview for every slide
+generate_slides.py  (DEPRECATED)
+=================================
+This Python script has been superseded by generate_slides.js, which uses
+PptxGenJS for richer, more aesthetic slide generation.
 
-Usage (from repo root):
-    python slides/generate_slides.py [--no-pptx] [--no-previews]
+To generate the deck:
+    cd docs/slides
+    npm install
+    npm run generate
 
-Requirements:
-    pip install python-pptx pillow
+See generate_slides.js and package.json for details.
+
+The code below is preserved for reference but is NO LONGER MAINTAINED.
+It targets an older 16-slide version of the spec with a different color scheme.
 """
 
 import argparse

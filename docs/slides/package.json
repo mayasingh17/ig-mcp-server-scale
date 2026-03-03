@@ -1,0 +1,13 @@
+{
+  "name": "ig-mcp-slides",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Slide generator for 'Ask and You Shall Debug' (SCaLE 23x)",
+  "scripts": {
+    "generate": "node generate_slides.js"
+  },
+  "dependencies": {
+    "js-yaml": "^4.1.0",
+    "pptxgenjs": "^3.12.0"
+  }
+}
