@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: load-cpu
+  namespace: default
+spec:
+  restartPolicy: Never
+  containers:
+  - name: load-cpu
+    image: alexeiled/stress-ng
+    args:
+    - --cpu
+    - "3"
+    - -l
+    - "85"
+    stdin: true
+    tty: true
+# Note: the original `kubectl run --rm` flag causes the pod to be deleted automatically
+# after it exits. This static manifest does not replicate that behavior.
+# Delete the pod manually after use: kubectl delete pod load-cpu

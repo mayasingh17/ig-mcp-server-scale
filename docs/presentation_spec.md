@@ -2,7 +2,7 @@
 deck:
   title: "Ask and You Shall Debug: Conversational Troubleshooting for Kubernetes"
   subtitle: "Inspektor Gadget MCP Server (SCaLE)"
-  event: "SCaLE"
+  event: "SCaLE 23x"
   branding:
     organization: "Inspektor Gadget"
     primary_color: "#111827"   # near-black
