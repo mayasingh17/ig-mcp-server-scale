@@ -1,0 +1,72 @@
+##############################################
+# Demo: "Connectivity Troubleshooting"
+# A Service misconfiguration causes silent
+# connection failures. Use Inspektor Gadget's
+# tcpdump to find the TCP RSTs on the wire.
+##############################################
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: demo-tcpdump
+---
+# nginx listens on port 80
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-server
+  namespace: demo-tcpdump
+  labels:
+    app: web-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web-server
+  template:
+    metadata:
+      labels:
+        app: web-server
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.27
+        ports:
+        - containerPort: 80
+---
+# BUG: targetPort is 8080, but nginx listens on 80!
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-server
+  namespace: demo-tcpdump
+spec:
+  selector:
+    app: web-server
+  ports:
+  - port: 80
+    targetPort: 8080
+    protocol: TCP
+---
+# Client pod that continuously tries to reach the service
+apiVersion: v1
+kind: Pod
+metadata:
+  name: client
+  namespace: demo-tcpdump
+  labels:
+    app: client
+spec:
+  containers:
+  - name: curl
+    image: curlimages/curl:latest
+    command:
+    - /bin/sh
+    - -c
+    - |
+      echo "=== The client is up and running ==="
+      echo "Trying to reach http://web-server ..."
+      while true; do
+        RESULT=$(curl -s -o /dev/null -w "%{http_code}" --connect-timeout 2 http://web-server 2>&1)
+        echo "[$(date +%H:%M:%S)] HTTP response: $RESULT"
+        sleep 3
+      done
